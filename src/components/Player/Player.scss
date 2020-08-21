@@ -1,0 +1,26 @@
+@import '../../styles/variables';
+
+
+.playerCard {
+  width: 300px !important;
+  height: 400px !important;
+  margin: 1em 1em;
+  .card-img-overlay {
+    padding: 0px 0px !important;
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  } 
+  .info{
+    margin-top: 18em;
+    padding-left: 10px;
+    padding-right: 10px;
+    // background-color: $accentColor;
+    border-radius: 50px 5px 50px 5px;
+    // border: $secondaryColor 2px dashed;
+    // top left top right bttom right bottom left
+  }
+}
