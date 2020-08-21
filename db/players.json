@@ -1,0 +1,38 @@
+{
+  "player1" : {
+    "imageUrl": "https://img.bleacherreport.net/img/slides/photos/004/260/552/hi-res-6d457f9fa18d7732e14e8b6f1577bc4b_crop_exact.jpg?h=533&w=800&q=70&crop_x=center&crop_y=top",
+    "name": "Joe Montana",
+    "position": "Quarterback",
+    "uid": "Nd1lfqr1zRTYyWvr18278Q0bwBA2"
+  },
+  "player2" : {
+    "imageUrl": "https://www.gannett-cdn.com/-mm-/78581dcec82983b6306b6a423a3274cf06a8da83/c=0-244-1044-1636/local/-/media/2015/03/25/DetroitFreePress/DetroitFreePress/635628481001131568-SPOT-SPORTS-COWBOYS.JPG?width=600&height=800&fit=crop&format=pjpg&auto=webp",
+    "name": "Barry sanders",
+    "position": "Running Back",
+    "uid": "Nd1lfqr1zRTYyWvr18278Q0bwBA2"
+  },
+  "player3" : {
+    "imageUrl": "https://cdn.vox-cdn.com/thumbor/JN6bxI5UWrP_jhU_6SC0lvpEv08=/0x97:3900x2697/1200x800/filters:focal(0x97:3900x2697)/cdn.vox-cdn.com/uploads/chorus_image/image/46014404/usa-today-5489216.0.jpg",
+    "name": "Art Monk",
+    "position": "Wide Receiver",
+    "uid": "Nd1lfqr1zRTYyWvr18278Q0bwBA2"
+  },
+  "player4" : {
+    "imageUrl": "https://cdn.theathletic.com/app/uploads/2020/04/21165230/Rob-Gronkowski-1-1024x629.jpg",
+    "name": "Rob Gronkowski",
+    "position": "Tight End",
+    "uid": "Nd1lfqr1zRTYyWvr18278Q0bwBA2"
+  },
+  "player5" : {
+    "imageUrl": "https://i.ytimg.com/vi/z38Xa2XmUSY/maxresdefault.jpg",
+    "name": "Jerome Bettis",
+    "position": "Fullback",
+    "uid": "Nd1lfqr1zRTYyWvr18278Q0bwBA2"
+  },
+  "player6" : {
+    "imageUrl": "https://cdn.vox-cdn.com/thumbor/aAuGQL6YwMzLx1_Hem3KrzALvL8=/0x0:2430x3600/1200x800/filters:focal(569x2058:957x2446)/cdn.vox-cdn.com/uploads/chorus_image/image/65145671/494987563.0.jpg",
+    "name": "Jim Langer",
+    "position": "Center",
+    "uid": "Nd1lfqr1zRTYyWvr18278Q0bwBA2"
+  }
+}

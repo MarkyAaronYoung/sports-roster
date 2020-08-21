@@ -4,6 +4,9 @@ import 'firebase/auth';
 
 import fbConnection from '../helpers/data/connection';
 
+import Team from '../components/Team/Team';
+import MyNavbar from '../components/MyNavbar/MyNavbar';
+
 import './App.scss';
 
 fbConnection();
@@ -18,18 +21,33 @@ componentDidMount() {
     if (user) {
       this.setState({ authed: true });
     } else {
-      this.setState({ authed: false});
+      this.setState({ authed: false });
     }
-  })
+  });
 }
-  render() {
-    return (
+
+componentWillUnmount() {
+  this.removeListener();
+}
+
+render() {
+  const { authed } = this.state;
+
+  const loadTeam = () => {
+    if (authed) {
+      return <Team />;
+    }
+    return <h1>Log in NOW</h1>;
+  };
+
+  return (
       <div className="App">
         <h2>Sports-Roster</h2>
-        <button className="btn btn-info">I am a button</button>
+        <MyNavbar authed={authed}/>
+        {loadTeam()}
       </div>
-    );
-  }
+  );
+}
 }
 
 export default App;
