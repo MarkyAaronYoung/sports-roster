@@ -14,14 +14,18 @@ class Team extends React.Component {
 
   deletePlayer = (playerId) => {
     playersData.deletePlayer(playerId)
-      .then(() => playersData.getPlayersByUid())
+      .then(() => this.getPlayers())
       .catch((err) => console.error('cannot fire player', err));
   }
 
-  componentDidMount() {
+  getPlayers = () => {
     playersData.getPlayersByUid(authData.getUid())
       .then((players) => this.setState({ players }))
       .catch((err) => console.error('get players broke', err));
+  }
+
+  componentDidMount() {
+    this.getPlayers();
   }
 
   render() {
