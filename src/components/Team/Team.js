@@ -12,6 +12,12 @@ class Team extends React.Component {
     players: [],
   }
 
+  deletePlayer = (playerId) => {
+    playersData.deletePlayer(playerId)
+      .then(() => playersData.getPlayersByUid())
+      .catch((err) => console.error('cannot fire player', err));
+  }
+
   componentDidMount() {
     playersData.getPlayersByUid(authData.getUid())
       .then((players) => this.setState({ players }))
@@ -21,7 +27,7 @@ class Team extends React.Component {
   render() {
     const { players } = this.state;
 
-    const playerCard = players.map((player) => <Player key={player.id} player={player}/>);
+    const playerCard = players.map((player) => <Player key={player.id} player={player} deletePlayer={this.deletePlayer}/>);
     return (
       <div className="card-columns">
         {playerCard}
