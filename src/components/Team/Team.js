@@ -10,6 +10,8 @@ import playersData from '../../helpers/data/playersData';
 class Team extends React.Component {
   state = {
     players: [],
+    formOpen: false,
+    updatePlayer: {},
   }
 
   createPlayer = (newPlayer) => {
@@ -33,18 +35,32 @@ class Team extends React.Component {
       .catch((err) => console.error('get players broke', err));
   }
 
+  selectEditPlayer = (player) => {
+    console.error(player);
+    this.setState({ editPlayer: player, formOpen: true });
+  }
+
+  editPlayer = (playerId, playerObj) => {
+    playersData.updatePlayer(playerId, playerObj)
+      .then(() => {
+        this.getPlayers();
+        this.state({ updatePlayer: {}, formOpen: false });
+      })
+      .catch((err) => console.error('failed to edit', err));
+  }
+
   componentDidMount() {
     this.getPlayers();
   }
 
   render() {
-    const { players, formOpen } = this.state;
+    const { players, formOpen, updatePlayer } = this.state;
 
-    const playerCard = players.map((player) => <Player key={player.id} player={player} deletePlayer={this.deletePlayer}/>);
+    const playerCard = players.map((player) => <Player key={player.id} player={player} selectEditPlayer={this.selectEditPlayer} deletePlayer={this.deletePlayer}/>);
     return (
       <div className="Roster">
-        <button className="btn btn-warning" onClick={() => { this.setState({ formOpen: !formOpen }); }}><i className="far fa-plus-square"></i>Create Player</button>
-        { formOpen ? <PlayerForm createPlayer={this.createPlayer}/> : ''}
+        <button className="btn btn-warning" onClick={() => { this.setState({ formOpen: !formOpen, editPlayer: {} }); }}><i className="far fa-plus-square"></i>Create Player</button>
+        { formOpen ? <PlayerForm updatePlayer={updatePlayer} editPlayer={this.editPlayer} createPlayer={this.createPlayer} closeForm={this.closeForm}/> : ''}
         <div className="card-columns">
           {playerCard}
         </div>

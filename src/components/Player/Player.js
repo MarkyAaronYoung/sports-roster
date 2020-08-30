@@ -10,12 +10,18 @@ class Player extends React.Component {
   static propTypes ={
     player: playerShape.playerShape,
     deletePlayer: PropTypes.func.isRequired,
+    selectEditPlayer: PropTypes.func.isRequired,
+  }
+
+  editPlayerEvent = (e) => {
+    e.preventDefault();
+    const { selectEditPlayer, player } = this.props;
+    selectEditPlayer(player);
   }
 
 deletePlayerEvent = (e) => {
   e.preventDefault();
   const { player, deletePlayer } = this.props;
-
   deletePlayer(player.id);
 };
 
@@ -31,6 +37,8 @@ render() {
           <h5 className='position'>Position: {player.position}</h5>
           <div className="btn-group">
             <button className="btn btn-warning" onClick={this.deletePlayerEvent}>Fire</button>
+            <button className="btn btn-dark" onClick={this.editPlayerEvent}>edit player</button>
+
           </div>
         </div>
       </div>
