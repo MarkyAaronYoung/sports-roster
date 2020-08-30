@@ -1,53 +1,50 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
-
-// import PlayerData from '../../helpers/data/playersData';
 
 import authData from '../../helpers/data/authData';
 
 class PlayerForm extends React.Component {
-  static propTypes= {
+  static propTypes = {
     createPlayer: PropTypes.func.isRequired,
-    closeForm: PropTypes.func.isRequired,
-    selectEditPlayer: PropTypes.object.isRequired,
     updatePlayer: PropTypes.func.isRequired,
+    selectedPlayer: PropTypes.object.isRequired,
+    closeForm: PropTypes.func.isRequired,
   }
 
   state = {
-    isEditing: false,
     imageUrl: '',
     name: '',
     position: '',
+    isEditing: false,
   }
 
   componentDidMount() {
-    const { selectEditPlayer } = this.props;
-    if (selectEditPlayer.name) {
+    const { selectedPlayer } = this.props;
+    if (selectedPlayer.name) {
       this.setState({
-        name: selectEditPlayer.name,
-        imageUrl: selectEditPlayer.imageUrl,
-        position: selectEditPlayer.position,
+        imageUrl: selectedPlayer.imageUrl,
+        name: selectedPlayer.name,
+        position: selectedPlayer.position,
         isEditing: true,
       });
     }
   }
 
   componentDidUpdate(prevProps) {
-    const previoiusPlayer = prevProps.selectEditPlayer;
-    const incomingPlayer = this.props.selectEditPlayer;
-
-    if (previoiusPlayer.name !== incomingPlayer.name) {
+    const prevPlayer = prevProps.selectedPlayer;
+    const incomingPlayer = this.props.selectedPlayer;
+    if (prevPlayer.name !== incomingPlayer.name) {
       this.setState({
-        name: incomingPlayer.name || '',
         imageUrl: incomingPlayer.imageUrl || '',
+        name: incomingPlayer.name || '',
         position: incomingPlayer.position || '',
-        isEditing: !!incomingPlayer.name,
+        // eslint-disable-next-line no-unneeded-ternary
+        isEditing: incomingPlayer.name ? true : false,
       });
     }
   }
 
-  changeImageEvent = (e) => {
+  changeImageUrlEvent = (e) => {
     e.preventDefault();
     this.setState({ imageUrl: e.target.value });
   }
@@ -64,8 +61,11 @@ class PlayerForm extends React.Component {
 
   savePlayerEvent = (e) => {
     e.preventDefault();
-    const { imageUrl, name, position } = this.state;
+    const {
+      imageUrl, name, position,
+    } = this.state;
     const { createPlayer } = this.props;
+
     const newPlayer = {
       imageUrl,
       name,
@@ -74,60 +74,53 @@ class PlayerForm extends React.Component {
     };
 
     createPlayer(newPlayer);
-    this.props.closeForm();
+  }
+
+  editPlayerEvent = (e) => {
+    e.preventDefault();
+    const {
+      imageUrl, name, position,
+    } = this.state;
+    const { updatePlayer, selectedPlayer } = this.props;
+
+    const myPlayerWithChanges = {
+      imageUrl,
+      name,
+      position,
+      uid: authData.getUid(),
+    };
+
+    updatePlayer(selectedPlayer.id, myPlayerWithChanges);
   }
 
   closeFormEvent = (e) => {
     e.preventDefault();
     this.props.closeForm();
-  }
-
-  editPlayerEvent = (e) => {
-    e.preventDefault();
-    const { name, position, imageUrl } = this.state;
-    const { updatePlayer, selectEditPlayer } = this.props;
-
-    const editedPlayer = {
-      name,
-      position,
-      imageUrl,
-      uid: authData.getUid(),
-    };
-    updatePlayer(selectEditPlayer.id, editedPlayer);
-  }
+  };
 
   render() {
-    const {
-      isEditing,
-      name,
-      position,
-      imageUrl,
-    } = this.state;
-
     return (
-    <form className="col-6 offset-3">
-      <button className="formBtn btn btn-warning" onClick={this.closeFormEvent}>Close Form</button>
-      <div className="form-group">
-     <label htmlFor="playerImg">Player Image</label>
-     <input
-        type="text"
-        className="form-control"
-        id="playerImg"
-        placeholder="Add Player Image"
-        value={imageUrl}
-        onChange={this.changeImageEvent}
-      />
+      <form className="col-6 offset-3">
+        <button className="btn btn-dark" onClick={this.closeFormEvent}><i className="fas fa-window-close"></i></button>
+         <div className="form-group">
+        <label htmlFor="playerImg">Player Image</label>
+        <input
+          type="text"
+          className="form-control"
+          id="playerImg"
+          placeholder="Add Player Image"
+          onChange={this.changeImageUrlEvent}
+        />
       </div>
-      <div className="form">
-        <label htmlFor="playerName"> Player Name</label>
+      <div className="form-group">
+        <label htmlFor="playerName">PlayerName</label>
         <input
           type="text"
           className="form-control"
           id="playerName"
           placeholder="Enter Player Name"
-          value={name}
           onChange={this.changeNameEvent}
-          />
+        />
       </div>
       <div className="form-group">
         <label htmlFor="playerPosition">Player Position</label>
@@ -136,15 +129,11 @@ class PlayerForm extends React.Component {
           className="form-control"
           id="playerPosition"
           placeholder="Enter Player Position"
-          value={position}
           onChange={this.changePositionEvent}
         />
       </div>
-      {
-        isEditing
-          ? <button className="btn btn-dark mb-2" onClick={this.editPlayerEvent}>Edit Player</button>
-          : <button className="btn btn-dark" onClick={this.savePlayerEvent}>Save Player</button>
-      }
+      <button className="btn btn-dark" onClick={this.editPlayerEvent}>Edit Player</button>
+      <button className="btn btn-dark" onClick={this.savePlayerEvent}>Save Player</button>
     </form>
     );
   }

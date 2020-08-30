@@ -1,68 +1,76 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-
-import Player from '../Player/Player';
-import PlayerForm from '../PlayerForm/PlayerForm';
+import PropTypes from 'prop-types';
 
 import authData from '../../helpers/data/authData';
-import playersData from '../../helpers/data/playersData';
+import playerData from '../../helpers/data/playersData';
+import Players from '../Player/Player';
+import PlayerForm from '../PlayerForm/PlayerForm';
+
+import './Team.scss';
 
 class Team extends React.Component {
+  static propTypes = {
+    authed: PropTypes.bool,
+  }
+
   state = {
     players: [],
     formOpen: false,
-    updatePlayer: {},
-  }
-
-  createPlayer = (newPlayer) => {
-    playersData.createPlayer(newPlayer)
-      .then(() => {
-        this.getPlayers();
-        this.setState({ formOpen: false });
-      })
-      .catch((err) => console.error('create player broke', err));
-  }
-
-  deletePlayer = (playerId) => {
-    playersData.deletePlayer(playerId)
-      .then(() => this.getPlayers())
-      .catch((err) => console.error('cannot fire player', err));
+    editPlayer: {},
   }
 
   getPlayers = () => {
-    playersData.getPlayersByUid(authData.getUid())
+    playerData.getPlayersByUid(authData.getUid())
       .then((players) => this.setState({ players }))
       .catch((err) => console.error('get players broke', err));
-  }
-
-  selectEditPlayer = (player) => {
-    console.error(player);
-    this.setState({ editPlayer: player, formOpen: true });
-  }
-
-  editPlayer = (playerId, playerObj) => {
-    playersData.updatePlayer(playerId, playerObj)
-      .then(() => {
-        this.getPlayers();
-        this.state({ updatePlayer: {}, formOpen: false });
-      })
-      .catch((err) => console.error('failed to edit', err));
   }
 
   componentDidMount() {
     this.getPlayers();
   }
 
-  render() {
-    const { players, formOpen, updatePlayer } = this.state;
+  deletePlayer = (playerId) => {
+    playerData.deletePlayer(playerId)
+      .then(() => this.getPlayers())
+      .catch((err) => console.error('cannot release players', err));
+  }
 
-    const playerCard = players.map((player) => <Player key={player.id} player={player} selectEditPlayer={this.selectEditPlayer} deletePlayer={this.deletePlayer}/>);
+  createPlayer = (newPlayer) => {
+    playerData.createPlayer(newPlayer)
+      .then(() => {
+        this.getPlayers();
+        this.setState({ formOpen: false });
+      })
+      .catch((err) => console.error('Create Player Broke', err));
+  }
+
+  editAPlayer = (playerToEdit) => {
+    this.setState({ formOpen: true, editPlayer: playerToEdit });
+  }
+
+  updatePlayer = (playerId, editedPlayer) => {
+    playerData.updatePlayer(playerId, editedPlayer)
+      .then(() => {
+        this.getPlayers();
+        this.setState({ formOpen: false, editPlayer: {} });
+      })
+      .catch((err) => console.error('update player broke', err));
+  }
+
+  closeForm = () => {
+    this.setState({ formOpen: false });
+  }
+
+  render() {
+    const { players, formOpen, editPlayer } = this.state;
+    const playerCards = players.map((player) => <Players key={player.id} player={player} deletePlayer={this.deletePlayer} editAPlayer={this.editAPlayer} />);
+
     return (
-      <div className="Roster">
-        <button className="btn btn-warning" onClick={() => { this.setState({ formOpen: !formOpen, editPlayer: {} }); }}><i className="far fa-plus-square"></i>Create Player</button>
-        { formOpen ? <PlayerForm updatePlayer={updatePlayer} editPlayer={this.editPlayer} createPlayer={this.createPlayer} closeForm={this.closeForm}/> : ''}
+      <div className="Team">
+        { !formOpen ? <button className="btn btn-secondary" onClick={() => { this.setState({ formOpen: true, editPlayer: {} }); }}><i className="far fa-plus-square"></i>Create</button> : '' }
+        { formOpen ? <PlayerForm createPlayer={this.createPlayer} selectedPlayer={editPlayer} updatePlayer={this.updatePlayer} closeForm={this.closeForm}/> : '' }
         <div className="card-columns">
-          {playerCard}
+          { playerCards }
         </div>
       </div>
     );

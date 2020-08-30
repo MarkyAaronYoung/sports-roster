@@ -22,7 +22,7 @@ class MyNavbar extends React.Component {
         <span className="navbar-brand mb-0 h1">Navbar</span>
         {
           authed ? (
-            <button className="btn btn-primary" onClick={this.logoutClickEvent}>Log Out</button>
+            <button className="btn btn-secondary" onClick={this.logoutClickEvent}>Log Out</button>
           ) : (
             <Auth />
           )
