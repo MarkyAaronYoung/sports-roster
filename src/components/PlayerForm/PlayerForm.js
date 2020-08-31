@@ -109,7 +109,7 @@ class PlayerForm extends React.Component {
           className="form-control"
           id="playerImg"
           placeholder="Add Player Image"
-          onChange={this.changeImageUrlEvent}
+
         />
       </div>
       <div className="form-group">
